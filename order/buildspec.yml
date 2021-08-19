@@ -6,6 +6,7 @@ env:
     _DIR_NAME: "order"
     _EKS: "teamtwohotel2"
     _NAMESPACE: "teamtwohotel"
+    IMAGE_REPO_NAME: "user01-order3"
 
 phases:
   install:
