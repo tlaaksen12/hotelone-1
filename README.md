@@ -102,16 +102,16 @@
 분석/설계 단계에서 도출된 헥사고날 아키텍처에 따라, 각 BC별로 대변되는 마이크로 서비스들을 스프링부트로 구현하였다. 구현한 각 서비스를 로컬에서 실행하는 방법은 아래와 같다 (각자의 포트넘버는 8081 ~ 8084 이다)
 
 ```
-cd /Users/07569/Desktop/hotelone/order
+cd /home/project/team/hotelone/order
 mvn spring-boot:run
 
-cd /Users/07569/Desktop/hotelone/reservation
+cd /home/project/team/hotelone/reservation
 mvn spring-boot:run 
 
-cd /Users/07569/Desktop/hotelone/payment
+cd /home/project/team/hotelone/payment
 mvn spring-boot:run  
 
-cd /Users/07569/Desktop/hotelone/customer
+cd /home/project/team/hotelone/customer
 mvn spring-boot:run 
 ```
 
@@ -192,8 +192,8 @@ http localhost:8081/orders name=Lee roomType=suite
 http localhost:8082/reservations orderId=1 status="confirmed"
 
 ```
-![image](https://user-images.githubusercontent.com/87048623/129839401-4a1d4051-1e0e-4767-8989-c35df8216c6f.png)
-![image](https://user-images.githubusercontent.com/87048623/129839685-ce10eea2-7b70-41ca-8c40-98025a8f29b6.png)
+![image](https://user-images.githubusercontent.com/87048623/129999165-c8f5fb73-59d7-4898-a2f5-cb47fbe2fbeb.png)
+![image](https://user-images.githubusercontent.com/87048623/129999197-63d85159-5847-48af-a02c-9aac3b9e2864.png)
 
 
 ## CQRS
@@ -204,7 +204,7 @@ http localhost:8082/reservations orderId=1 status="confirmed"
 # 주문 상태 확인
 http localhost:8084/mypages/1
 ```
-![image](https://user-images.githubusercontent.com/87048623/129840674-60292bc2-f714-4f21-9ab9-638270a6c4f1.png)
+![image](https://user-images.githubusercontent.com/87048623/129999240-6dafc1c9-0bca-4a43-8cb3-a98071a319fb.png)
 
 
 ## 폴리글랏 퍼시스턴스
@@ -237,8 +237,8 @@ http localhost:8084/mypages/1
 
 ```
 
-![image](https://user-images.githubusercontent.com/87048623/129842055-4023041c-7f46-42f7-b2fc-2150b1063ac0.png)
-![image](https://user-images.githubusercontent.com/87048623/129842093-6413bf82-4712-4e1f-baff-ece849003f01.png)
+![image](https://user-images.githubusercontent.com/87048623/129999342-39d60491-b7e9-4a8c-a281-4c335deb3e4d.png)
+![image](https://user-images.githubusercontent.com/87048623/129999387-8f1ab984-21a1-4d0c-af5c-dd77c9f88f3c.png)
 
 
 
@@ -300,17 +300,17 @@ public interface PaymentHistoryService {
 http localhost:8081/orders name=kim roomType=double   
 
 ```
-![image](https://user-images.githubusercontent.com/87048623/129843381-7c24cd3c-7963-4798-8386-a461047074b3.png)
+![image](https://user-images.githubusercontent.com/87048623/129999620-a66e42bc-0dd6-412c-903e-7175fd590d1d.png)
 
 ```
 #결제서비스 재기동
-cd /Users/07569/Desktop/hotelone/payment
+cd /home/project/team/hotelone/payment
 mvn spring-boot:run
 
 #주문처리 #Success
 http localhost:8081/orders name=kim roomType=double  
 ```
-![image](https://user-images.githubusercontent.com/87048623/129843405-fe969687-6a5e-4429-9f65-386ee8003572.png)
+![image](https://user-images.githubusercontent.com/87048623/129999773-53cdeb37-afd3-4e05-bd7a-9aea95d1be21.png)
 
 
 ## 비동기식 호출 / 시간적 디커플링 / 장애격리 / 최종 (Eventual) 일관성 테스트
@@ -345,7 +345,6 @@ public class PaymentHistory {
 ```
 
 - reservation 서비스에서는 결제승인 이벤트에 대해서 이를 수신하여 자신의 정책을 처리하도록 PolicyHandler 를 구현한다.
-- 실제 구현을 하자면, 카톡 등으로 호텔은 노티를 받고, 예약 내용을 확인 하고, 예약 상태를 UI에 입력할테니, 우선 예약정보를 DB에 받아놓은 후, 이후 처리는 해당 Aggregate 내에서 하면 되겠다.
 
 ```
 # PolicyHandler.java
@@ -362,8 +361,7 @@ public class PolicyHandler{
 
 
         if(paymentApproved.isMe()){
-            System.out.println("##### listener  : " + paymentApproved.toJson());
-	    // 결제 정보를 받았으니, 예약 알림 필요 (카카오톡)
+            System.out.println("##### listener  : " + paymentApproved.toJson());	  
             Reservation reservation = new Reservation();
             reservation.setStatus("Reservation Complete");
             reservation.setOrderId(paymentApproved.getOrderId());
@@ -383,23 +381,23 @@ reservation 시스템은 order/payment와 완전히 분리되어있으며, 이�
 # 주문 처리
 http localhost:8081/orders name=Yoo roomType=standard   #Success
 ```
-![image](https://user-images.githubusercontent.com/87048623/129848932-ab27491e-0edc-4702-817c-dcb123529b9b.png)
+![image](https://user-images.githubusercontent.com/87048623/129999950-ca9b0a5c-1b87-4eff-af3c-8b7fc4651ad0.png)
 
 ```
 # 예약상태 확인
 http localhost:8084/mypages/4  # 예약상태 안바뀜 확인     
 ```
-![image](https://user-images.githubusercontent.com/87048623/129848861-143fa96d-3450-4c3b-bcff-42bd5a2580a6.png)
+![image](https://user-images.githubusercontent.com/87048623/130000011-0ea13f64-81c3-4ccc-bc53-94f97fb8d9ab.png)
 
 ```
 # reservation 서비스 기동
-cd /Users/07569/Desktop/hotelone/reservation
+cd /home/project/team/hotelone/reservation
 mvn spring-boot:run 
 
 # 예약상태 확인
 http localhost:8084/mypages/4   # 예약상태가 "Reservation Complete"로 확인
 ```
-![image](https://user-images.githubusercontent.com/87048623/129849547-8c75623c-5b41-435b-946c-7532aa8123ec.png)
+![image](https://user-images.githubusercontent.com/87048623/130000098-fb46ed65-62d2-4ae5-93d5-1b92c72c0b3a.png)
 
 
 ## API 게이트웨이(gateway)
@@ -414,7 +412,7 @@ mvn spring-boot:run
 # API gateway를 통한 예약 주문
 http localhost:8080/orders name=jason roomType=suite
 ```
-![image](https://user-images.githubusercontent.com/87048623/129851598-d8cf33b0-0db4-4b88-b069-625365c0ef5c.png)
+![image](https://user-images.githubusercontent.com/87048623/130000185-6ecac4c7-1f74-4c2e-8c61-3e1f152f42ac.png)
 
 ```
 application.yml
