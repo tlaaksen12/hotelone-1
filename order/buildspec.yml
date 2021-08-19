@@ -2,11 +2,10 @@ version: 0.2
 
 env: 
   variables:
-    _PROJECT_NAME: "teamtwohotel2-order"
+    _PROJECT_NAME: "user01-order3"
     _DIR_NAME: "order"
     _EKS: "teamtwohotel2"
     _NAMESPACE: "teamtwohotel"
-    IMAGE_REPO_NAME: "user01-order3"
 
 phases:
   install:
