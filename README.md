@@ -507,7 +507,7 @@ server:
 
 각 구현체들은 각자의 source repository 에 구성되었고, 사용한 CI/CD 플랫폼은 AWS를 사용하였으며, pipeline build script 는 각 프로젝트 폴더 이하에 cloudbuild.yml 에 포함되었다.
 
-![image](https://user-images.githubusercontent.com/87048623/130062432-1e7570a7-79ff-4d79-a774-6ac6af262baa.png)
+![image](https://user-images.githubusercontent.com/87048693/131858068-bba72e51-8d87-484a-b7f8-18a35c44205d.png)
 
 
 
